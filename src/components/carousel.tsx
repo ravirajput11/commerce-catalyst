@@ -6,47 +6,49 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 
-// interface CarouselImage {
-//   sys: {
-//     id: string;
-//   };
-//   fields: {
-//     image: {
-//       fields: {
-//         file: {
-//           url: string;
-//         };
-//       };
-//     };
-//   };
-// }
+interface Asset {
+  sys: {
+    id: string;
+  };
+  fields: {
+    file: {
+      url: string;
+    };
+  };
+}
 
-// export interface CarouselImage {
-//     id: string;
-//     title: string;
-//     imageUrl: string;
-//   }
+interface CarouselItem {
+  sys: {
+    id: string;
+  };
+}
+
+interface ContentfulResponse {
+  data: {
+    items: {
+      fields: {
+        commerceCatalystCarousel: CarouselItem[];
+      };
+    }[];
+    includes: {
+      Asset: Asset[];
+    };
+  };
+}
 
 const CarouselSection = () => {
-  const [images, setImages] = useState([]);
-
+  const [images, setImages] = useState<string[]>([]);
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+  const [current, setCurrent] = useState<number>(0);
 
   useEffect(() => {
     if (!api) {
       return;
     }
-
-    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
-
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
@@ -55,17 +57,12 @@ const CarouselSection = () => {
   useEffect(() => {
     const fetchCarouselImages = async () => {
       try {
-        const response = await contentfulAPI.get(
+        const response: ContentfulResponse = await contentfulAPI.get(
           "?content_type=commerceCatalyst"
         );
-        //   console.log("Contentful data:", response.data.items);
         const items =
           response.data.items[0]?.fields.commerceCatalystCarousel || [];
-        //   console.log("items", items);
-
         const assets = response.data.includes.Asset;
-        //   console.log("assets", assets);
-
         // Map asset IDs to URLs
         const images = items
           .map((item: any) => {
@@ -75,8 +72,6 @@ const CarouselSection = () => {
             return asset ? `https:${asset.fields.file.url}` : null;
           })
           .filter(Boolean); // Remove null values if no asset found
-
-        console.log("asset images", images);
         setImages(images);
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
@@ -84,11 +79,9 @@ const CarouselSection = () => {
       }
     };
     fetchCarouselImages();
-  }, []);
+  }, [images]);
 
-  if (images.length === 0) return <p>Loading...</p>;
-
-  //   console.log("carousel Images:", images);
+  if (images.length === 0) return <p>Not found</p>;
 
   return (
     <>
@@ -115,8 +108,6 @@ const CarouselSection = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          {/* <CarouselPrevious />
-          <CarouselNext /> */}
         </Carousel>
         <div className="py-3 text-center">
           <div className="flex justify-center space-x-2">

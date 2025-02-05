@@ -3,8 +3,8 @@ import CategoriesList from "@/components/categories/categories-list";
 import NewAarrivals from "@/components/products/new-arrivals/new-arrivals";
 import BestSellarsInKitchen from "@/components/products/kitchen/best-sellars-in-kitchen";
 import TrendingProducts from "@/components/products/trending-products";
-import SquareIiamges from "@/components/square-images";
 import CarouselSection from "@/components/carousel";
+import SquareImages from "@/components/square-images";
 
 const Home = () => {
   return (
@@ -24,7 +24,7 @@ const Home = () => {
           <CarouselSection />
           <TrendingProducts />
           {/* special sale */}
-          <SquareIiamges />
+          <SquareImages />
           <BestSellarsInKitchen />
           <NewAarrivals />
         </div>

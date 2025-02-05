@@ -2,23 +2,48 @@ import { contentfulAPI } from "@/contentful/contentful";
 import { useEffect, useState } from "react";
 import TopPicks from "./products/top-picks";
 
-const SquareIiamges = () => {
-  const [squareImages, setSquareImages] = useState([]);
+interface Asset {
+  sys: {
+    id: string;
+  };
+  fields: {
+    file: {
+      url: string;
+    };
+  };
+}
+
+interface CommerceCatalystImage {
+  sys: {
+    id: string;
+  };
+}
+
+interface ContentfulResponse {
+  data: {
+    items: {
+      fields: {
+        commerceCatalystImages: CommerceCatalystImage[];
+      };
+    }[];
+    includes: {
+      Asset: Asset[];
+    };
+  };
+}
+
+const SquareImages = () => {
+  const [squareImages, setSquareImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchSquareImages = async () => {
       try {
-        const response = await contentfulAPI.get(
+        const response: ContentfulResponse = await contentfulAPI.get(
           "?content_type=commerceCatalyst"
         );
-        // console.log("Contentful data:", response.data.items);
         const items =
           response.data.items[0]?.fields.commerceCatalystImages || [];
-        // console.log("items", items);
-
         const assets = response.data.includes.Asset;
-        // console.log("assets", assets);
-
         // Map asset IDs to URLs
         const images = items
           .map((item: any) => {
@@ -28,8 +53,6 @@ const SquareIiamges = () => {
             return asset ? `https:${asset.fields.file.url}` : null;
           })
           .filter(Boolean); // Remove null values if no asset found
-
-        // console.log("asset images", images);
         setSquareImages(images);
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
@@ -38,44 +61,57 @@ const SquareIiamges = () => {
     };
 
     fetchSquareImages();
-  }, []);
-
-  // console.log("squareImages", squareImages);
+  }, [squareImages]);
 
   return (
     <div>
-      <div className="grid grid-cols-3 gap-4 mb-10">
-        <div className="flex bg-[#EBE2F4] p-4 drop-shadow-lg rounded-xl ">
+      <div className="relative flex flex-wrap gap-4 my-10 h-80">
+        <div className="relative flex flex-col bg-[#EBE2F4] p-4 pt-32 drop-shadow-lg rounded-xl w-[32%] h-60 mt-16">
           <img
             src={squareImages[0]}
+            width={200}
             alt="square image 1"
-            className="w-full h-40 object-cover rounded-md mb-2"
+            className="absolute -top-14 right-0 object-cover rounded-md mb-2"
           />
-          <div className="text-sm">
-            <p>SPECIAL SALE 60% OFFER</p>
-            <p className="font-bold">SHOP NOW</p>
+          <div className="absolute flex bottom-0 text-sm pb-4">
+            <p className="text-3xl w-2/3">SPECIAL SALE 60% OFFER</p>
+            <button className="absolute  w-16 font-bold px-1 py-4 right-3 bottom-3 bg-[#552864] rounded-3xl text-white text-xs">
+              SHOP NOW
+            </button>
           </div>
         </div>
-        <div className="flex bg-[#D3F1EC] p-4 drop-shadow-lg rounded-xl ">
+
+        <div className="relative flex flex-col bg-[#D3F1EC] p-4 drop-shadow-lg rounded-xl w-[32%] h-60 ">
           <img
             src={squareImages[1]}
+            width={250}
             alt="square image 1"
-            className="w-full h-40 object-cover rounded-md mb-2"
+            className="absolute -bottom-24 right-14 object-cover rounded-md mb-2"
           />
-          <div className="text-sm">
-            <p>SPECIAL SALE 80% OFFER</p>
-            <p className="font-bold">SHOP NOW</p>
+          <div className="absolute flex top-0 text-sm pt-4">
+            <p className="text-3xl w-2/3">SPECIAL SALE 80% OFFER</p>
+            <button className="absolute  w-16 font-bold px-1 py-4 right-3 top-3 bg-[#065E9E] rounded-3xl text-white text-xs">
+              SHOP NOW
+            </button>
           </div>
         </div>
-        <div className="flex bg-[#EFEFEF] p-4 drop-shadow-lg rounded-xl ">
+
+        <div className="relative flex flex-col bg-[#EFEFEF] p-4 drop-shadow-lg rounded-xl w-[32%] h-60  mt-16">
           <img
             src={squareImages[2]}
+            width={250}
             alt="square image 1"
-            className="w-full h-40 object-cover rounded-md mb-2"
+            className="absolute -top-14 right-0 object-cover rounded-md mb-2"
           />
-          <div className="text-sm">
-            <p>DISCOUNT SALE UPTO 20%</p>
-            <p className="font-bold">SHOP NOW</p>
+          <div className="absolute w-full flex justify-between bottom-0 text-sm pb-4">
+            <div className="flex flex-col">
+              <p className="text-3xl ">DISCOUNT </p>
+              <p className="text-3xl"> SALE</p>
+              <p className="text-3xl">UPTO 20%</p>
+            </div>
+            <button className="absolute w-16 font-bold px-1 py-4 right-6 bottom-3 bg-[#552864] rounded-3xl text-white text-xs">
+              SHOP NOW
+            </button>
           </div>
         </div>
       </div>
@@ -85,27 +121,34 @@ const SquareIiamges = () => {
       </div>
 
       {/* FASHION SALE */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="flex bg-[#9A9576] p-4 drop-shadow-lg rounded-xl h-48">
+      <div className="flex flex-wrap gap-4 mb-6 h-64 pt-10">
+        <div className="flex  bg-[#9A9576] p-4 drop-shadow-lg rounded-xl h-48 w-[48%]">
           <img
             src={squareImages[3]}
+            width={200}
             alt="square image 1"
-            className="w-22 h-full object-cover rounded-md mb-2"
+            className="absolute -bottom-2 object-cover rounded-md mb-2"
           />
-          <div className="text-sm">
-            <p>DISCOUNT SALE UPTO 20%</p>
-            <p className="font-bold">SHOP NOW</p>
+          <div className="absolute  left-1/2 text-sm">
+            <p className="text-3xl w-1/2 text-white mb-3">WOMENS FASION SALE</p>
+            <button className="px-5 py-2 bg-[#57492B] rounded text-white text-xs font-bold">
+              SHOP NOW
+            </button>
           </div>
         </div>
-        <div className="flex bg-[#ABAFB2] p-4 drop-shadow-lg rounded-xl h-48">
+
+        <div className="flex flex-col bg-[#ABAFB2] p-4 drop-shadow-lg rounded-xl h-48 w-[48%]">
           <img
             src={squareImages[4]}
+            width={200}
             alt="square image 1"
-            className="w-22 h-full object-cover rounded-md mb-2"
+            className="absolute -bottom-2 object-cover rounded-md mb-2"
           />
-          <div className="text-sm">
-            <p>DISCOUNT SALE UPTO 20%</p>
-            <p className="font-bold">SHOP NOW</p>
+          <div className="absolute  left-1/2 text-sm">
+            <p className="text-3xl w-1/2 text-white mb-3">MENS FASION SALE</p>
+            <button className="px-5 py-2 bg-[#57595A] rounded text-white text-xs font-bold">
+              SHOP NOW
+            </button>
           </div>
         </div>
       </div>
@@ -113,4 +156,4 @@ const SquareIiamges = () => {
   );
 };
 
-export default SquareIiamges;
+export default SquareImages;
