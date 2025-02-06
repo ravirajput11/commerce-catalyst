@@ -1,83 +1,8 @@
 // src/hooks/useProductsByCategory.ts
-import { useApolloClient, useQuery, gql } from "@apollo/client";
+import { GET_CATEGORIES, PRODUCTS_BY_CATEGORY } from "@/graphQL/queries/queries";
+import { Category, Product, ProductsByCategoryResponse } from "@/graphQL/queries/types";
+import { useApolloClient, useQuery} from "@apollo/client";
 import { useEffect, useState } from "react";
-
-interface Category {
-  id: string;
-  key: string;
-  name: string;
-}
-
-interface Product {
-  id: string;
-  key: string;
-  name: string;
-  description?: string;
-  masterVariant: {
-    prices: {
-      value: {
-        currencyCode: string;
-        centAmount: number;
-      };
-    }[];
-    images: {
-      url: string;
-    }[];
-  };
-}
-
-interface ProductsByCategoryResponse {
-  productProjectionSearch: {
-    offset: number;
-    total: number;
-    count: number;
-    results: Product[];
-  };
-}
-
-const GET_CATEGORIES = gql`
-  query GetCategories {
-    categories(limit: 4) {
-      total
-      results {
-        id
-        key
-        name(locale: "en-US")
-      }
-    }
-  }
-`;
-
-const PRODUCTS_BY_CATEGORY = gql`
-  query ProductsByCategory(
-    $filters: [SearchFilterInput!]!
-    $limit: Int
-    $offset: Int
-  ) {
-    productProjectionSearch(filters: $filters, limit: $limit, offset: $offset) {
-      offset
-      total
-      count
-      results {
-        id
-        key
-        name(locale: "en-US")
-        description(locale: "en-US")
-        masterVariant {
-          prices {
-            value {
-              currencyCode
-              centAmount
-            }
-          }
-          images {
-            url
-          }
-        }
-      }
-    }
-  }
-`;
 
 /**
  * Custom hook to fetch products by category.

@@ -1,66 +1,21 @@
-import { contentfulAPI } from "@/contentful/contentful";
 import { useEffect, useState } from "react";
 import TopPicks from "./products/top-picks";
-
-interface Asset {
-  sys: {
-    id: string;
-  };
-  fields: {
-    file: {
-      url: string;
-    };
-  };
-}
-
-interface CommerceCatalystSalesBanner {
-  sys: {
-    id: string;
-  };
-}
-
-interface ContentfulResponse {
-  data: {
-    items: {
-      fields: {
-        commerceCatalystSalesBanner: CommerceCatalystSalesBanner[];
-      };
-    }[];
-    includes: {
-      Asset: Asset[];
-    };
-  };
-}
+import { getContentfulImages } from "@/contentful/getContentfulImages";
 
 const SalesBanner = () => {
   const [salesBanner, setSalesBanner] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchSquareImages = async () => {
+    const getSalesBanner = async () => {
       try {
-        const response: ContentfulResponse = await contentfulAPI.get(
-          "?content_type=commerceCatalyst"
-        );
-        const items =
-          response.data.items[0]?.fields.commerceCatalystSalesBanner || [];
-        const assets = response.data.includes.Asset;
-        // Map asset IDs to URLs
-        const images = items
-          .map((item: any) => {
-            const asset = assets.find(
-              (asset: any) => asset.sys.id === item.sys.id
-            );
-            return asset ? `https:${asset.fields.file.url}` : null;
-          })
-          .filter(Boolean); // Remove null values if no asset found
-        setSalesBanner(images.filter((image): image is string => image !== null));
+        const images = await getContentfulImages("commerceCatalystSalesBanner");
+        setSalesBanner(images);
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
         return [];
       }
     };
-
-    fetchSquareImages();
+    getSalesBanner();
   }, []);
 
   return (

@@ -1,20 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
-import { CategoriesResponse, Category } from "./types";
+import { GET_CATEGORIES } from "@/graphQL/queries/queries";
+import { CategoriesResponse, Category } from "@/graphQL/queries/types";
 
-// GraphQL query
-export const GET_CATEGORIES = gql`
-  query GetCategories {
-    categories(limit: 4) {
-      total
-      results {
-        id
-        key
-        name(locale: "en-US")
-      }
-    }
-  }
-`;
 
 const CategoriesList = () => {
   const { loading, error, data } = useQuery<CategoriesResponse>(GET_CATEGORIES);

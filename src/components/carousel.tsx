@@ -1,43 +1,12 @@
-import { contentfulAPI } from "@/contentful/contentful";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
-
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-
-interface Asset {
-  sys: {
-    id: string;
-  };
-  fields: {
-    file: {
-      url: string;
-    };
-  };
-}
-
-interface CarouselItem {
-  sys: {
-    id: string;
-  };
-}
-
-interface ContentfulResponse {
-  data: {
-    items: {
-      fields: {
-        commerceCatalystCarousel: CarouselItem[];
-      };
-    }[];
-    includes: {
-      Asset: Asset[];
-    };
-  };
-}
+import { getContentfulImages } from "@/contentful/getContentfulImages";
 
 const CarouselSection = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -55,30 +24,16 @@ const CarouselSection = () => {
   }, [api]);
 
   useEffect(() => {
-    const fetchCarouselImages = async () => {
+    const getCarouselImages = async () => {
       try {
-        const response: ContentfulResponse = await contentfulAPI.get(
-          "?content_type=commerceCatalyst"
-        );
-        const items =
-          response.data.items[0]?.fields.commerceCatalystCarousel || [];
-        const assets = response.data.includes.Asset;
-        // Map asset IDs to URLs
-        const images = items
-          .map((item: any) => {
-            const asset = assets.find(
-              (asset: any) => asset.sys.id === item.sys.id
-            );
-            return asset ? `https:${asset.fields.file.url}` : null;
-          })
-          .filter(Boolean); // Remove null values if no asset found
-        setImages(images.filter((image): image is string => image !== null));
+        const images = await getContentfulImages("commerceCatalystCarousel");
+        setImages(images);
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
         return [];
       }
     };
-    fetchCarouselImages();
+    getCarouselImages();
   }, []);
 
   if (images.length === 0) return <p>Not found</p>;
