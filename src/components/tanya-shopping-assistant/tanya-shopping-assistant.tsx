@@ -1,7 +1,3 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -15,9 +11,9 @@ const TanyaShoppingAssistant = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="destuctive">
+        <button className="rounded">
           <img src={tanyaChatBotIcon} alt="Chat with Tanya" />{" "}
-        </Button>
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-96 bg-white">
         {/* header */}
@@ -43,8 +39,10 @@ const TanyaShoppingAssistant = () => {
           </p>
 
           <div className="rounded">
-            <textarea placeholder="Ask me anything" className="w-full h-10 bg-gray-100 rounded p-2">
-            </textarea>
+            <textarea
+              placeholder="Ask me anything"
+              className="w-full h-10 bg-gray-100 rounded p-2"
+            ></textarea>
             <button>Send</button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 // src/apollo-client.js
-import { ApolloClient, InMemoryCache, createHttpLink, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { generateToken } from '@/utils/generateToken';
 

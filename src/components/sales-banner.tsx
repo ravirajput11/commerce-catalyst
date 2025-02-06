@@ -53,7 +53,7 @@ const SalesBanner = () => {
             return asset ? `https:${asset.fields.file.url}` : null;
           })
           .filter(Boolean); // Remove null values if no asset found
-        setSalesBanner(images);
+        setSalesBanner(images.filter((image): image is string => image !== null));
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
         return [];

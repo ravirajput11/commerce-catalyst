@@ -72,7 +72,7 @@ const CarouselSection = () => {
             return asset ? `https:${asset.fields.file.url}` : null;
           })
           .filter(Boolean); // Remove null values if no asset found
-        setImages(images);
+        setImages(images.filter((image): image is string => image !== null));
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
         return [];
