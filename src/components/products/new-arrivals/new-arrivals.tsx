@@ -1,17 +1,11 @@
-// https://docs.commercetools.com/getting-started/using-graphql
-
 import useProductsByCategory from "@/hooks/useProductsByCategory";
 
 const NewAarrivals = () => {
-  // const categoryId = "4296d36b-1b86-47c0-ac49-36a2769de7ef"
-
   const { products, loading, error } = useProductsByCategory({
     limit: 4,
     offset: 0,
     categoryId: "4296d36b-1b86-47c0-ac49-36a2769de7ef",
   });
-
-  // console.log("Logs the query", PRODUCTS_BY_CATEGORY.loc?.source.body); // Logs the query
 
   if (loading) return <div className="p-4">Loading categories...</div>;
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;

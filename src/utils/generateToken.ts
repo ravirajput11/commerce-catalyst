@@ -1,21 +1,16 @@
 import axios from "axios";
 
 export const generateToken = async (): Promise<string | null> => {
-  // const URL = "https://aspiresys-ai-server.vercel.app";
-  const URL =
-    "https://auth.australia-southeast1.gcp.commercetools.com/oauth/token";
-  // const tokenCredentials = {
-  //   grant_type: "client_credentials",
-  //   client_id: "tfegsSBVOYnR7e_yE-AjxVVN",
-  //   client_secret: "pyKWgHuTxuMwDygh9JH1ehLEaLvAhBo4",
-  // };
+  
+  const URL = import.meta.env.VITE_TOKEN_URL;
+  const clientId = import.meta.env.VITE_CLIENT_ID;
+  const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
-  const clientId = "tfegsSBVOYnR7e_yE-AjxVVN";
-  const clientSecret = "pyKWgHuTxuMwDygh9JH1ehLEaLvAhBo4";
+  if (!URL || !clientId || !clientSecret) {
+    console.error("Missing token credentials");
+    throw new Error("Missing token credentials");
+  }
 
-  // const authHeader =
-  //   "Basic " + Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
-  // generateToken.ts (with browser-safe code)
   const authHeader =
     "Basic " +
     btoa(encodeURIComponent(clientId) + ":" + encodeURIComponent(clientSecret));
@@ -32,7 +27,6 @@ export const generateToken = async (): Promise<string | null> => {
       }
     );
 
-    // console.log("response", response);
     if (response.status === 200 && response.data.access_token) {
       return response.data.access_token;
     } else {

@@ -61,7 +61,7 @@ const SalesBanner = () => {
     };
 
     fetchSquareImages();
-  }, [salesBanner]);
+  }, []);
 
   return (
     <div>

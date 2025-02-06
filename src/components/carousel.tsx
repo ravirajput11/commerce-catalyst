@@ -79,7 +79,7 @@ const CarouselSection = () => {
       }
     };
     fetchCarouselImages();
-  }, [images]);
+  }, []);
 
   if (images.length === 0) return <p>Not found</p>;
 

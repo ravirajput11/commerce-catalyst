@@ -5,8 +5,6 @@ const TrendingProducts = () => {
     limit: 1,   // Number of products per category
   });
 
-  // console.log("products", products);
-
   if (loading) return <div>Loading trending products...</div>;
   if (error) return <div>Error: {error}</div>;
 

@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { CategoriesResponse, Category } from "./types";
-// import Furniture from "@/assets/categories/furniture.webp";
 
 // GraphQL query
 export const GET_CATEGORIES = gql`

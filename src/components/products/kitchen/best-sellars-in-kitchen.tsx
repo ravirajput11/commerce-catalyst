@@ -7,8 +7,6 @@ const BestSellarsInKitchen = () => {
     categoryId: "ca5e506d-3c97-4b66-8be2-b81b5ea4f64a",
   });
 
-  // console.log("Logs the query", PRODUCTS_BY_CATEGORY.loc?.source.body); // Logs the query
-
   if (loading) return <div className="p-4">Loading categories...</div>;
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 

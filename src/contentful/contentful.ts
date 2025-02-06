@@ -1,13 +1,16 @@
 import axios from "axios";
 
-// const SPACE_ID = '0eb7z2xtfgk9'; // Replace with your Contentful space ID
-// const ACCESS_TOKEN = 'RArQuMVjyohK6VxIVeTC_3wCM2XdYWqqdEGsKrEau88'; // Replace with your Contentful access token
+const SPACE_ID = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
+const ACCESS_TOKEN = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
+const ENVIRONMENT = import.meta.env.VITE_CONTENTFUL_ENVIRONMENT;
 
-const SPACE_ID = "1k5ychtb1qol"; // Replace with your Contentful space ID
-const ACCESS_TOKEN = "Xp1QuRMyUQokl2Z2nlV2zZAkKUyYmpkxM06NMIr-be4"; // Replace with your Contentful access token
+if (!SPACE_ID || !ACCESS_TOKEN || !ENVIRONMENT) {
+  console.error("Missing contentful credentials");
+  throw new Error("Missing contentful credentials");
+}
 
 export const contentfulAPI = axios.create({
-  baseURL: `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries`,
+  baseURL: `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/${ENVIRONMENT}/entries`,
   headers: {
     Authorization: `Bearer ${ACCESS_TOKEN}`,
   },

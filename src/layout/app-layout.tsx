@@ -1,4 +1,3 @@
-// import  Header  from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { Outlet } from "react-router";
 
@@ -8,7 +7,6 @@ const AppLayout = () => {
       <div className="flex min-h-screen">
         <Sidebar />
         <div className="flex-1">
-          {/* <Header /> */}
           <main className="absolute bg-white left-28 py-4 px-8 rounded-l-[4vw] min-h-screen w-[92vw]">
             <Outlet />
           </main>
