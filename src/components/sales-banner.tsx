@@ -13,7 +13,7 @@ interface Asset {
   };
 }
 
-interface CommerceCatalystImage {
+interface CommerceCatalystSalesBanner {
   sys: {
     id: string;
   };
@@ -23,7 +23,7 @@ interface ContentfulResponse {
   data: {
     items: {
       fields: {
-        commerceCatalystImages: CommerceCatalystImage[];
+        commerceCatalystSalesBanner: CommerceCatalystSalesBanner[];
       };
     }[];
     includes: {
@@ -32,8 +32,8 @@ interface ContentfulResponse {
   };
 }
 
-const SquareImages = () => {
-  const [squareImages, setSquareImages] = useState<string[]>([]);
+const SalesBanner = () => {
+  const [salesBanner, setSalesBanner] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchSquareImages = async () => {
@@ -42,7 +42,7 @@ const SquareImages = () => {
           "?content_type=commerceCatalyst"
         );
         const items =
-          response.data.items[0]?.fields.commerceCatalystImages || [];
+          response.data.items[0]?.fields.commerceCatalystSalesBanner || [];
         const assets = response.data.includes.Asset;
         // Map asset IDs to URLs
         const images = items
@@ -53,7 +53,7 @@ const SquareImages = () => {
             return asset ? `https:${asset.fields.file.url}` : null;
           })
           .filter(Boolean); // Remove null values if no asset found
-        setSquareImages(images);
+        setSalesBanner(images);
       } catch (error) {
         console.error("Error fetching Contentful data:", error);
         return [];
@@ -61,14 +61,14 @@ const SquareImages = () => {
     };
 
     fetchSquareImages();
-  }, [squareImages]);
+  }, [salesBanner]);
 
   return (
     <div>
       <div className="relative flex flex-wrap gap-4 my-10 h-80">
         <div className="relative flex flex-col bg-[#EBE2F4] p-4 pt-32 drop-shadow-lg rounded-xl w-[32%] h-60 mt-16">
           <img
-            src={squareImages[0]}
+            src={salesBanner[0]}
             width={200}
             alt="square image 1"
             className="absolute -top-14 right-0 object-cover rounded-md mb-2"
@@ -83,7 +83,7 @@ const SquareImages = () => {
 
         <div className="relative flex flex-col bg-[#D3F1EC] p-4 drop-shadow-lg rounded-xl w-[32%] h-60 ">
           <img
-            src={squareImages[1]}
+            src={salesBanner[1]}
             width={250}
             alt="square image 1"
             className="absolute -bottom-24 right-14 object-cover rounded-md mb-2"
@@ -98,7 +98,7 @@ const SquareImages = () => {
 
         <div className="relative flex flex-col bg-[#EFEFEF] p-4 drop-shadow-lg rounded-xl w-[32%] h-60  mt-16">
           <img
-            src={squareImages[2]}
+            src={salesBanner[2]}
             width={250}
             alt="square image 1"
             className="absolute -top-14 right-0 object-cover rounded-md mb-2"
@@ -124,7 +124,7 @@ const SquareImages = () => {
       <div className="flex flex-wrap gap-4 mb-6 h-64 pt-10">
         <div className="flex  bg-[#9A9576] p-4 drop-shadow-lg rounded-xl h-48 w-[48%]">
           <img
-            src={squareImages[3]}
+            src={salesBanner[3]}
             width={200}
             alt="square image 1"
             className="absolute -bottom-2 object-cover rounded-md mb-2"
@@ -139,7 +139,7 @@ const SquareImages = () => {
 
         <div className="flex flex-col bg-[#ABAFB2] p-4 drop-shadow-lg rounded-xl h-48 w-[48%]">
           <img
-            src={squareImages[4]}
+            src={salesBanner[4]}
             width={200}
             alt="square image 1"
             className="absolute -bottom-2 object-cover rounded-md mb-2"
@@ -156,4 +156,4 @@ const SquareImages = () => {
   );
 };
 
-export default SquareImages;
+export default SalesBanner;
