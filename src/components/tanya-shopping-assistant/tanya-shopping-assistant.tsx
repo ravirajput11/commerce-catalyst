@@ -92,7 +92,6 @@ const TanyaShoppingAssistant = () => {
           },
         }
       );
-      console.log("response : ", res);
       const { response, potentialQuestions } = res.data;
 
       setChatHistory((prev) =>
