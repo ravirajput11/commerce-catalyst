@@ -1,3 +1,5 @@
+// for graphQL queries
+
 import axios from "axios";
 
 export const generateToken = async (): Promise<string | null> => {
